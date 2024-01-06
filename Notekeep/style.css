@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+#app {
+    max-width: 600px;
+    margin: auto;
+}
+
+#noteForm {
+    margin-bottom: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+#notes {
+    margin-top: 20px;
+}
+
+.note {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.note p {
+    margin: 5px 0;
+}
+
+.note .delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
