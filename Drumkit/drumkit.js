@@ -20,5 +20,3 @@ function playSound(sound) {
     sound.currentTime = 1
     sound.play()
 }
-
-/*const clap =document.querySelector('#1')*/
