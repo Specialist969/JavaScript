@@ -1,36 +1,42 @@
+// Klucz API
 const apiKey = '20d7064e2930efd33f33748d9394d164';
 
 document.addEventListener('DOMContentLoaded', () => {
   loadLocations();
 });
 
+// Funkcja odaje nowe miejsce do listy i wyświetla jego pogodę
 async function addLocation() {
+  // Pobranie nazwy miejsca z pola
   const locationInput = document.getElementById('locationInput');
   const locationName = locationInput.value.trim();
 
+  // Sprawdzenie, czy pole wejściowe nie jest puste
   if (locationName !== '') {
     try {
+      // Pobranie danych pogodowych
       const weatherData = await getWeatherData(locationName);
+      // Wyświetlenie danych pogodowych
       displayWeather(locationName, weatherData);
 
-      // Pobierz aktualną listę miejsc
+      // Pobranie aktualnej listy miejsc
       const locations = JSON.parse(localStorage.getItem('locations')) || [];
 
-      // Dodaj nowe miejsce do listy
+      // Dodanie nowego miejsca do listy
       locations.push(locationName);
 
-      // Ogranicz listę miejsc do 10
+      // Ograniczenie listy miejsc do 10 - usuwanie najstarszego miejsca
       if (locations.length > 10) {
-        locations.shift(); // Usuń pierwszy element z listy
+        locations.shift(); // Usunięcie pierwszego elementu z listy
       }
 
- 
+      // Zapisanie listy miejsc
       localStorage.setItem('locations', JSON.stringify(locations));
     } catch (error) {
       console.error('There was an error fetching weather data:', error);
     }
 
-    locationInput.value = '';
+    locationInput.value = ''; // Wyczyszczenie pola wejściowego formularza po dodaniu miejsca
   }
 }
 
@@ -41,16 +47,17 @@ function loadLocations() {
   });
 }
 
+// Funkcja usuwa miejsce z listy
 function removeLocation(locationName) {
   const locations = JSON.parse(localStorage.getItem('locations')) || [];
   const updatedLocations = locations.filter(loc => loc !== locationName);
   localStorage.setItem('locations', JSON.stringify(updatedLocations));
 
-
   const locationElement = document.getElementById(locationName);
   locationElement.remove();
 }
 
+// Funkcja  pobiera dane pogodowe z API na podstawie nazwy miejsca
 async function getWeatherData(locationName) {
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${locationName}&appid=${apiKey}&units=metric`;
 
@@ -71,12 +78,14 @@ async function getWeatherData(locationName) {
   }
 }
 
+// Funkcja wyświetla informacje o pogodzie dla danego miejsca
 function displayWeather(locationName, data) {
   const locationsContainer = document.getElementById('locations');
   const locationElement = document.createElement('div');
   locationElement.id = locationName;
   locationElement.className = 'location';
 
+  // Utworzenie treści, zawiera informacje o pogodzie oraz przycisk usuwania
   const weatherIconUrl = getWeatherIconUrl(data.condition);
   const content = `
     <div>
@@ -94,8 +103,8 @@ function displayWeather(locationName, data) {
   locationsContainer.appendChild(locationElement);
 }
 
+// Funkcja  zwraca ikone pogody
 function getWeatherIconUrl(condition) {
-
   const iconMap = {
     'clear': '01d.png',
     'clouds': '03d.png',
@@ -106,6 +115,7 @@ function getWeatherIconUrl(condition) {
   return iconMap[condition];
 }
 
+// Funkcja pobiera dane pogodowe dla danego miejsca i wywołuje funkcję displayWeather() do ich wyświetlenia
 async function getWeather(locationName) {
   try {
     const weatherData = await getWeatherData(locationName);
