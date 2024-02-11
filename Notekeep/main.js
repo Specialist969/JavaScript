@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createNoteElement = (note) => {
         const element = document.createElement('div');
-        element.classList.add('note'); // Dodanie klasy 'note'
+        element.classList.add('note');
         element.style.backgroundColor = note.color; // Tło notatki
         // Ustawienie treści: tytuł, treść, data, przycisk usuwania
         element.innerHTML = `
