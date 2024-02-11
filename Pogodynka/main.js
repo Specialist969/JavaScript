@@ -105,14 +105,25 @@ function displayWeather(locationName, data) {
 
 // Funkcja  zwraca ikone pogody
 function getWeatherIconUrl(condition) {
+  const iconBaseUrl = 'https://openweathermap.org/img/wn/';
   const iconMap = {
-    'clear': '01d.png',
-    'clouds': '03d.png',
-    'rainy': '10d.png',
-    'snowy': '13d.png'
+    'clear': '01',
+    'clouds': '04',
+    'rain': '10',
+    'thunderstorm': '11',
+    'snow': '13',
+    'mist': '50'
   };
 
-  return iconMap[condition];
+  const iconSuffix = 'd.png';
+
+  if (iconMap.hasOwnProperty(condition)) {
+    return iconBaseUrl + iconMap[condition] + iconSuffix;
+  } else {
+
+    return '';
+  }
+  //return iconMap[condition];
 }
 
 // Funkcja pobiera dane pogodowe dla danego miejsca i wywołuje funkcję displayWeather() do ich wyświetlenia
