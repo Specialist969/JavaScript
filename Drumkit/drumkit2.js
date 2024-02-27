@@ -1,56 +1,109 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const drumKit = document.getElementById('drumkit');
+  const recordBtns = [document.getElementById('recordBtn1'), document.getElementById('recordBtn2'), document.getElementById('recordBtn3'), document.getElementById('recordBtn4')];
+  const playBtn = document.getElementById('playBtn');
+  let isRecording = false;
+  let recordedSounds = JSON.parse(localStorage.getItem('recordedSounds')) || [null, null, null, null];
+  let currentTrack = 0;
 
-document.addEventListener("keypress", function(event) { 
-    sound(event.key); 
-    animation(event.key); 
+  drumKit.addEventListener('click', function (event) {
+      const sound = event.target.dataset.sound;
+      if (sound) {
+          playSound(sound);
+          if (isRecording) {
+              recordedSounds[currentTrack] = recordedSounds[currentTrack] || {};
+              recordedSounds[currentTrack][sound] = recordedSounds[currentTrack][sound] || [];
+              recordedSounds[currentTrack][sound].push(Date.now());
+              localStorage.setItem('recordedSounds', JSON.stringify(recordedSounds));
+          }
+      }
+  });
+
+  document.addEventListener("keypress", function(event) { 
+      sound(event.key); 
   }); 
   
   function sound(key) { 
       switch (key) { 
-        case "q": 
-          var sound1 = new Audio("sounds/boom.wav"); 
-          sound1.play(); 
-          break; 
-      
-        case "w": 
-          var sound2 = new Audio("sounds/clap.wav"); 
-          sound2.play(); 
-          break; 
-      
-        case "e": 
-          var sound3 = new Audio('sounds/hihat.wav'); 
-          sound3.play(); 
-          break;
-      
-        case "r": 
-          var sound4 = new Audio('sounds/kick.wav'); 
-          sound4.play(); 
-          break; 
-      
-        case "t": 
-          var sound5 = new Audio('sounds/openhat.wav'); 
-          sound5.play(); 
-          break; 
-      
-        case "y": 
-          var sound6 = new Audio('sounds/ride.wav'); 
-          sound6.play(); 
-          break; 
-      
-        case "u": 
-          var sound7 = new Audio('sounds/snare.wav'); 
-          sound7.play(); 
-          break; 
-  
-        case "i": 
-          var sound7 = new Audio('sounds/tink.wav'); 
-          sound7.play(); 
-          break; 
-          
-        case "o": 
-          var sound7 = new Audio('sounds/tom.wav'); 
-          sound7.play(); 
-          break; 
-      
-        default: console.log(key); 
+          case "q": 
+              playSound("boom"); 
+              break; 
+          case "w": 
+              playSound("clap"); 
+              break; 
+          case "e": 
+              playSound("hihat"); 
+              break;
+          case "r": 
+              playSound("kick"); 
+              break; 
+          case "t": 
+              playSound("openhat"); 
+              break; 
+          case "y": 
+              playSound("ride"); 
+              break; 
+          case "u": 
+              playSound("snare"); 
+              break; 
+          case "i": 
+              playSound("tink"); 
+              break; 
+          case "o": 
+              playSound("tom"); 
+              break; 
+          // Dodatkowe klawisze dla kolejnych ścieżek utworów
+          case "1":
+              currentTrack = 0; // Pierwsza ścieżka utworu
+              break;
+          case "2":
+              currentTrack = 1; // Druga ścieżka utworu
+              break;
+          case "3":
+              currentTrack = 2; // Trzecia ścieżka utworu
+              break;
+          case "4":
+              currentTrack = 3; // Czwarta ścieżka utworu
+              break;
+          default: 
+              console.log(key); 
       } 
-    } 
+  } 
+
+  recordBtns.forEach(function(recordBtn, index) {
+      recordBtn.addEventListener('click', function () {
+          isRecording = !isRecording;
+          if (isRecording) {
+              currentTrack = index;
+              recordedSounds[currentTrack] = {};
+              localStorage.setItem('recordedSounds', JSON.stringify(recordedSounds));
+          }
+      });
+  });
+
+  playBtn.addEventListener('click', function () {
+      playRecordedSounds();
+  });
+
+  function playSound(sound) {
+      console.log(`Playing sound: ${sound}`);
+      const audio = new Audio(`sounds/${sound}.wav`);
+      audio.play();
+  }
+
+  function playRecordedSounds() {
+      // Iteracja przez wszystkie ścieżki utworów i odtwarzanie nagranych dźwięków
+      for (let i = 0; i < recordedSounds.length; i++) {
+          const track = recordedSounds[i];
+          if (track) {
+              Object.keys(track).forEach(function (sound) {
+                  track[sound].forEach(function (timestamp, index) {
+                      setTimeout(function () {
+                          playSound(sound);
+                      }, timestamp - track[sound][0]);
+                  });
+              });
+          }
+      }
+  }
+});

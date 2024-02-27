@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drumkit</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="./drumkit3.js" defer></script>
 </head>
+
 <body>
-    <audio src="./sounds/boom.wav" id="s1"></audio>
-    <audio src="./sounds/clap.wav" id="s2"></audio>
-    <audio src="./sounds/hihat.wav" id="s3"></audio>
-    <audio src="./sounds/kick.wav" id="s4"></audio>
-    <audio src="./sounds/openhat.wav" id="s5"></audio>
-    <audio src="./sounds/ride.wav" id="s6"></audio>
-    <audio src="./sounds/snare.wav" id="s7"></audio>
-    <audio src="./sounds/tink.wav" id="s8"></audio>
-    <p>Dźwięk TOM</p>
-    <audio src="./sounds/tom.wav" controls id="s9"></audio>
+  <audio src="./sounds/hihat.wav" id="hihat"></audio>
+  <audio src="./sounds/clap.wav" id="clap"></audio>
+  <audio src="./sounds/kick.wav" id="kick"></audio>
+  <audio src="./sounds/openhat.wav" id="openhat"></audio>
+  <audio src="./sounds/boom.wav" id="boom"></audio>
+  <audio src="./sounds/ride.wav" id="ride"></audio>
+  <audio src="./sounds/snare.wav" id="snare"></audio>
+  <audio src="./sounds/tom.wav" id="tom"></audio>
+  <audio src="./sounds/tink.wav" id="tink"></audio>
 
-    <script src="drumkit2.js"></script>
+  <div id="main">
+    <div class="buttonrec">
+      <button id="record">Record</button>
+    </div>
+    <div>
+      <p>Your records</p>
+      <ul class="records"></ul>
+    </div>
+  </div>
+</body>
 
-</body> 
 </html>
